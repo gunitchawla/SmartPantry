@@ -7,13 +7,13 @@ sudo apt-get update
 echo "Installing required packages..."
 
 sudo apt-get install -y \
-curl \
-git \
-wget \
-unzip \
-apt-transport-https \
-ca-certificates \
-software-properties-common
+    curl \
+    git \
+    wget \
+    unzip \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common
 
 echo "Installing Docker..."
 

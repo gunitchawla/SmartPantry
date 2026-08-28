@@ -19,7 +19,9 @@ Vagrant.configure("2") do |config|
     end
 
     frontend.vm.synced_folder ".", "/vagrant"
-    frontend.vm.provision "shell", path: "scripts/provision.sh"
+
+    frontend.vm.provision "shell",
+      path: "scripts/provision.sh"
 
   end
 
@@ -40,7 +42,9 @@ Vagrant.configure("2") do |config|
     end
 
     backend.vm.synced_folder ".", "/vagrant"
-    backend.vm.provision "shell", path: "scripts/provision.sh"
+
+    backend.vm.provision "shell",
+      path: "scripts/provision.sh"
 
   end
 
@@ -61,8 +65,11 @@ Vagrant.configure("2") do |config|
     end
 
     database.vm.synced_folder ".", "/vagrant"
-    database.vm.provision "shell", path: "scripts/provision.sh"
+
+    database.vm.provision "shell",
+      path: "scripts/provision.sh"
 
   end
 
 end
+
