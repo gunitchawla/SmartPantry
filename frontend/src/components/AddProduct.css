@@ -1,0 +1,139 @@
+.add-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 24px 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.add-card__tab {
+  position: absolute;
+  top: -13px;
+  left: 20px;
+  background: var(--sage);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(43, 74, 52, 0.28);
+}
+
+.add-card h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin: 6px 0 6px;
+  color: var(--ink);
+}
+
+.add-card__hint {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.field span {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+.field input {
+  font: inherit;
+  font-size: 15px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input::placeholder {
+  color: #b3ae9f;
+}
+
+.field input:focus-visible {
+  outline: none;
+  border-color: var(--sage);
+  box-shadow: 0 0 0 3px var(--sage-tint);
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-primary {
+  margin-top: 4px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+  background: var(--sage);
+  border: none;
+  border-radius: 9px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--sage-deep);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--sage-deep);
+  outline-offset: 2px;
+}
+
+.form-feedback {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-radius: 7px;
+}
+
+.form-feedback--success {
+  background: var(--sage-tint);
+  color: var(--sage-deep);
+}
+
+.form-feedback--error {
+  background: var(--brick-tint);
+  color: var(--brick);
+}
+
+@media (max-width: 520px) {
+  .field-row {
+    flex-direction: column;
+  }
+}

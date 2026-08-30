@@ -1,0 +1,97 @@
+.pantry-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.pantry-section__head h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin: 0;
+  color: var(--ink);
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--sage);
+  color: var(--sage-deep);
+}
+
+.chip--active {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--sage-deep);
+  outline-offset: 2px;
+}
+
+.pantry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.state-panel {
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+
+.state-panel p {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.state-panel--error {
+  border-color: var(--brick-tint);
+  background: var(--brick-tint);
+  color: var(--brick);
+}
+
+.state-panel--error p {
+  margin-bottom: 14px;
+}
+
+.btn-secondary {
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--brick);
+  background: #fff;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
