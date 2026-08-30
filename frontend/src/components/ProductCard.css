@@ -28,6 +28,12 @@
   border-left-color: var(--line);
 }
 
+.product-card__body {
+  /* Wraps the name + meta so the stamp stays pinned to the bottom, keeping
+     card footers aligned across the grid. */
+  flex: 1;
+}
+
 .product-card__top {
   display: flex;
   align-items: flex-start;

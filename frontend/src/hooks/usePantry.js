@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import api from "../services/api";
 
-/**
- * Owns the pantry data: loading the product list and adding new items.
- * status is one of "loading" | "ready" | "error" so the UI can render
- * skeletons, the real grid, or a retry panel without guessing.
- */
 export function usePantry() {
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState("loading");
