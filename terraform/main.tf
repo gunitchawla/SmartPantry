@@ -32,7 +32,7 @@ data "aws_ami" "ubuntu" {
 # Security Groups (Decoupled Two-Tier Architecture with unique name prefixes)
 # -----------------------------------------------------------------------------
 resource "aws_security_group" "frontend" {
-  name_prefix = "smartpantry-frontend-"
+  name        = "smartpantry-frontend-sg"
   description = "Allow HTTP and SSH inbound to SmartPantry Frontend"
   vpc_id      = data.aws_vpc.default.id
 
@@ -66,7 +66,7 @@ resource "aws_security_group" "frontend" {
 }
 
 resource "aws_security_group" "backend" {
-  name_prefix = "smartpantry-backend-"
+  name        = "smartpantry-backend-api-sg"
   description = "Allow API traffic from Frontend and SSH to SmartPantry Backend"
   vpc_id      = data.aws_vpc.default.id
 
