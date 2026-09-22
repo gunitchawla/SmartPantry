@@ -1,0 +1,29 @@
+# =============================================================================
+# SmartPantry Terraform Deployment Variables Example
+# Copy this file to `terraform.tfvars` and customize as needed:
+#   cp terraform.tfvars.example terraform.tfvars
+# =============================================================================
+
+# AWS Region (AWS Academy Learner Lab default is us-east-1)
+aws_region = "us-east-1"
+
+# Deployment environment tag
+environment = "production"
+
+# EC2 Instance Type (t3.micro is free-tier eligible and within Learner Lab limits)
+instance_type = "t3.micro"
+
+# Optional SSH Key Pair name (must exist in AWS EC2 Console under Key Pairs)
+# If left empty, instances launch without an SSH key pair
+key_name = ""
+
+# Set to true when running inside AWS Academy Learner Lab to use pre-created LabInstanceProfile
+use_lab_role = true
+
+# Optional: Email address to subscribe to Amazon SNS expiry & stock alerts
+# After applying, AWS SNS will send a confirmation email to this address.
+alert_email = "student@otago.ac.nz"
+
+# Git repository cloned during EC2 instance provisioning
+git_repo_url = "https://github.com/gunitchawla/SmartPantry.git"
+git_branch   = "main"

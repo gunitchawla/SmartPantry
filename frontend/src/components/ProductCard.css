@@ -141,6 +141,31 @@
   }
 }
 
+.product-card__actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-consume {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-consume:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .product-card,
   .product-card--skeleton {
@@ -148,3 +173,4 @@
     transition: none;
   }
 }
+

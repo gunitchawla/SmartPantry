@@ -9,7 +9,7 @@ const FILTERS = [
   { id: "expired", label: "Expired" },
 ];
 
-function ProductList({ products, status, error, onRetry }) {
+function ProductList({ products, status, error, onRetry, onDelete }) {
   const [filter, setFilter] = useState("all");
 
   const sorted = useMemo(() => {
@@ -76,7 +76,7 @@ function ProductList({ products, status, error, onRetry }) {
       {status === "ready" && visible.length > 0 && (
         <div className="pantry-grid">
           {visible.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} onDelete={onDelete} />
           ))}
         </div>
       )}

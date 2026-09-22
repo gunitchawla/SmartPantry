@@ -28,7 +28,10 @@ function Header({ total, soon, expired }) {
             </svg>
           </span>
           <div>
-            <p className="eyebrow">Kitchen inventory</p>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <p className="eyebrow">Kitchen inventory</p>
+              <span style={{ fontSize: "11px", fontWeight: "700", background: "#e0f2fe", color: "#0369a1", padding: "2px 8px", borderRadius: "12px", border: "1px solid #bae6fd" }}>☁️ AWS Cloud</span>
+            </div>
             <h1>Smart Pantry</h1>
           </div>
         </div>

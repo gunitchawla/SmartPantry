@@ -1,11 +1,38 @@
 # ==========================
-# Vagrant
+# Terraform & Cloud IaC (CRITICAL: Do not commit secrets/state)
 # ==========================
-.vagrant/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+.terraform.lock.hcl
+*.plan
+.chrome-temp/
+app_bundle.zip
+*.zip
 
 # ==========================
-# VMware
+# Credentials, Keys & Environment
 # ==========================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cer
+*.crt
+*.pfx
+*.p12
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# ==========================
+# Vagrant & VMware (Assignment 1 Legacy)
+# ==========================
+.vagrant/
 *.vmdk
 *.vmsd
 *.vmxf
@@ -20,22 +47,37 @@ docker-data/
 *.tar
 
 # ==========================
-# Node.js
+# Node.js & Dependencies
 # ==========================
 node_modules/
-npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
 # ==========================
-# Logs
+# Build Outputs
+# ==========================
+dist/
+build/
+*.tsbuildinfo
+
+# ==========================
+# Logs & System Temp
 # ==========================
 *.log
+logs/
+*.tmp
 
 # ==========================
-# macOS
+# macOS & IDEs
 # ==========================
 .DS_Store
-
-# ==========================
-# VS Code
-# ==========================
+.AppleDouble
+.LSOverride
+._*
 .vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj

@@ -1,870 +1,365 @@
-# 🥫 SmartPantry
+# 🥫 SmartPantry: Cloud Edition
+### Scalable, Cloud-Native Pantry Inventory Management System
+**COSC349: Cloud Computing Architecture — Assignment 2 (2026)**
 
-### Cloud-Based Pantry Inventory Management System
+SmartPantry is a modern, distributed cloud application designed to help households track perishable groceries, prevent food waste, monitor stock levels, and dispatch real-time expiry alerts.
 
-SmartPantry is a modern pantry inventory management system designed to help users manage products, track quantities, and monitor expiry dates through an intuitive web dashboard.
-
-The project demonstrates a **distributed cloud-style architecture** using separate virtual machines for the frontend, backend, and database. It uses **Vagrant** for virtual machine provisioning and **Docker** for containerisation.
+Initially deployed across local virtual machines in Assignment 1, this version redesigns and extends SmartPantry into a production-grade, public cloud infrastructure deployed on **Amazon Web Services (AWS)** using **Terraform** Infrastructure as Code (IaC).
 
 ---
 
 ## 📌 Table of Contents
 
-* [Project Overview](#-project-overview)
-* [Key Features](#-key-features)
-* [Architecture](#-architecture)
-* [Technology Stack](#-technology-stack)
+* [Architecture Overview](#-architecture-overview)
+* [Key Cloud Features](#-key-cloud-features)
+* [Cloud Services Utilized](#-cloud-services-utilized)
+* [Prerequisites & Required Tool Versions](#-prerequisites--required-tool-versions)
+* [AWS Academy Learner Lab Setup](#-aws-academy-learner-lab-setup)
+* [Deployment Instructions](#-deployment-instructions)
+* [Automated Workflow Verification](#-automated-workflow-verification)
+* [Deployment Variables Reference](#-deployment-variables-reference)
+* [Manual Steps Justification](#-manual-steps-justification)
+* [Cost & Resource Lifecycle](#-cost--resource-lifecycle)
+* [Screen Recording Demonstration](#-screen-recording-demonstration)
+* [Local Development & Testing](#-local-development--testing)
+* [Security & Trust Boundaries](#-security--trust-boundaries)
 * [Project Structure](#-project-structure)
-* [Virtual Machines](#-virtual-machines)
-* [Prerequisites](#-prerequisites)
-* [Installation](#-installation)
-* [Running the Project](#-running-the-project)
-* [Frontend](#-frontend)
-* [Backend API](#-backend-api)
-* [Database](#-database)
-* [Adding Products](#-adding-products)
-* [Testing](#-testing)
-* [Docker](#-docker)
-* [Troubleshooting](#-troubleshooting)
-* [Git Workflow](#-git-workflow)
-* [Future Improvements](#-future-improvements)
-* [Conclusion](#-conclusion)
 
 ---
 
-# 📖 Project Overview
+## 🏗️ Architecture Overview
 
-SmartPantry provides a centralised interface for managing pantry inventory.
-
-Users can:
-
-* View all pantry products
-* Add new products
-* Track product quantities
-* Monitor expiry dates
-* Identify products that are expiring soon
-* Identify expired products
-* Identify low-stock products
-* Search the inventory
-* Filter products by status
-
-The application is designed using a multi-tier architecture:
+SmartPantry adopts **Compute Approach 1** (two interacting virtual machines + managed services), decoupling the presentation, business logic, storage, and notification tiers.
 
 ```text
-                    ┌──────────────────────┐
-                    │      User / Mac      │
-                    └──────────┬───────────┘
-                               │
-                               │ HTTP
-                               ▼
-                 ┌──────────────────────────┐
-                 │      Frontend VM         │
-                 │   React + Vite           │
-                 │   192.168.56.10:5173    │
-                 └────────────┬─────────────┘
-                              │
-                              │ REST API
-                              ▼
-                 ┌──────────────────────────┐
-                 │       Backend VM         │
-                 │    Node.js + Express     │
-                 │   192.168.56.11:5000    │
-                 └────────────┬─────────────┘
-                              │
-                              │ MySQL
-                              ▼
-                 ┌──────────────────────────┐
-                 │      Database VM         │
-                 │         MySQL            │
-                 │   192.168.56.12:3306    │
-                 └──────────────────────────┘
-```
-
-This separation allows each application layer to operate independently.
-
----
-
-# ✨ Key Features
-
-## 📊 Dashboard
-
-The dashboard provides an overview of the pantry, including:
-
-* Total products
-* Expiring products
-* Expired products
-* Low-stock products
-
-## 🔎 Product Search
-
-Users can search for products by name.
-
-## 🏷️ Product Status
-
-Products are automatically categorised according to their expiry date:
-
-| Status           | Description                            |
-| ---------------- | -------------------------------------- |
-| 🟢 Fresh         | Product has more than 3 days remaining |
-| 🟠 Expiring Soon | Product expires within 3 days          |
-| 🔴 Expired       | Product has already expired            |
-
-## ➕ Add Product
-
-Users can add a product through the website using:
-
-* Product name
-* Quantity
-* Expiry date
-
-## 📱 Responsive UI
-
-The React interface is designed to work across different screen sizes.
-
----
-
-# 🏗️ Architecture
-
-SmartPantry follows a **three-tier architecture**.
-
-### 1. Presentation Layer
-
-The React frontend is responsible for:
-
-* User interface
-* Product display
-* Search and filtering
-* Product creation form
-* Dashboard statistics
-
-### 2. Application Layer
-
-The Node.js backend is responsible for:
-
-* REST API endpoints
-* Processing requests
-* Validating and handling product data
-* Communicating with MySQL
-
-### 3. Data Layer
-
-The MySQL database is responsible for:
-
-* Persistent product storage
-* Product quantities
-* Expiry dates
-* Product identifiers
-
----
-
-# 🛠️ Technology Stack
-
-| Technology     | Purpose                     |
-| -------------- | --------------------------- |
-| React          | Frontend UI                 |
-| Vite           | Frontend development server |
-| Node.js        | Backend runtime             |
-| Express        | REST API                    |
-| MySQL          | Database                    |
-| Docker         | Containerisation            |
-| Docker Compose | Multi-container management  |
-| Vagrant        | VM provisioning             |
-| VMware Fusion  | Virtualisation              |
-| Git            | Version control             |
-| GitHub         | Source-code hosting         |
-
----
-
-# 📁 Project Structure
-
-```text
-SmartPantry/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   └── ...
-│   ├── package.json
-│   └── ...
-│
-├── backend/
-│   ├── server.js
-│   ├── controllers/
-│   ├── routes/
-│   ├── Dockerfile
-│   └── ...
-│
-├── database/
-│   └── ...
-│
-├── scripts/
-│   └── provision.sh
-│
-├── Vagrantfile
-│
-├── docker-compose.yml
-│
-└── README.md
+                               ┌─────────────────────────────────┐
+                               │       End User / Browser        │
+                               └────────────────┬────────────────┘
+                                                │
+                                                │ HTTP (Port 80)
+                                                ▼
+ ┌────────────────────────────────────────────────────────────────────────────────────────┐
+ │ AWS Cloud (us-east-1 / AWS Academy Learner Lab)                                        │
+ │                                                                                        │
+ │  ┌──────────────────────────────────────────────────────────────────────────────────┐  │
+ │  │ Virtual Private Cloud (Default VPC)                                              │  │
+ │  │                                                                                  │  │
+ │  │   ┌─────────────────────────────┐         ┌─────────────────────────────┐        │  │
+ │  │   │ Frontend EC2 (t3.micro)     │         │ Backend EC2 (t3.micro)      │        │  │
+ │  │   │ • Nginx Web Server (:80)    │  HTTP   │ • Node.js 22 LTS API (:5000)│        │  │
+ │  │   │ • React + Vite SPA Bundle   ├────────►│ • IAM LabInstanceProfile    │        │  │
+ │  │   │ • Reverse Proxy (/api/*)    │  :5000  │ • Auto-restart via systemd  │        │  │
+ │  │   │ SG: smartpantry-frontend-sg │         │ SG: smartpantry-backend-sg  │        │  │
+ │  │   └─────────────────────────────┘         └──────────────┬──────────────┘        │  │
+ │  │                                                          │                       │  │
+ │  └──────────────────────────────────────────────────────────┼───────────────────────┘  │
+ │                                                             │                          │
+ │                    ┌────────────────────────────────────────┼────────────────────┐     │
+ │                    │ SigV4 Signed API Calls (HTTPS TLS 1.3) │                    │     │
+ │                    ▼                                        ▼                    ▼     │
+ │     ┌─────────────────────────────┐          ┌──────────────────────┐ ┌──────────────┐ │
+ │     │ Managed Storage: DynamoDB   │          │ Managed Messaging:   │ │ Object Store:│ │
+ │     │ Table: smartpantry-inventory│          │ Amazon SNS           │ │ Amazon S3    │ │
+ │     │ • Primary Key: id (UUID)    │          │ Topic:               │ │ Bucket:      │ │
+ │     │ • On-Demand (Zero Idle Cost)│          │ smartpantry-alerts   │ │ smartpantry- │ │
+ │     │ • Auto-Partitioned Multi-AZ │          │ • Expiry & Stock SMS │ │ data-*       │ │
+ │     └─────────────────────────────┘          └──────────────┬───────┘ └──────────────┘ │
+ │                                                             │                          │
+ └─────────────────────────────────────────────────────────────┼──────────────────────────┘
+                                                               │ Email / SMS Notifications
+                                                               ▼
+                                                ┌─────────────────────────────┐
+                                                │ Subscribed Users / Managers │
+                                                └─────────────────────────────┘
 ```
 
 ---
 
-# 💻 Virtual Machines
+## ✨ Key Cloud Features
 
-The project uses three Vagrant virtual machines.
-
-| VM       | IP Address      | Role              |
-| -------- | --------------- | ----------------- |
-| Frontend | `192.168.56.10` | React application |
-| Backend  | `192.168.56.11` | Node.js API       |
-| Database | `192.168.56.12` | MySQL             |
-
-Each VM uses:
-
-```text
-Ubuntu 24.04
-2 GB RAM
-2 CPUs
-```
-
-The VMs communicate through Vagrant's private network.
+* **Serverless NoSQL Storage**: Replaced self-hosted local MySQL with **Amazon DynamoDB** for sub-10ms reads and writes, multi-AZ redundancy, and zero idle cost.
+* **Decoupled Alert Dispatching**: Integrates **Amazon SNS** to broadcast real-time alerts when items are expiring soon ($\le 3$ days), expired, or low in stock ($\le 2$ units).
+* **Inventory Audit Sweep**: Operator-triggered or automated inventory scan publishing aggregated summary digests via Amazon SNS.
+* **Email Subscription Flow**: Direct subscription to SNS topic from the web UI to receive pantry notifications.
+* **Cloud Object Exports**: Backs up immutable inventory snapshots to an **Amazon S3** bucket.
+* **Reverse Proxying**: Nginx securely proxies `/api/*` requests across internal VPC IP addresses, eliminating CORS issues.
+* **IMDSv2 & Zero Hardcoded Secrets**: Leverages AWS EC2 Instance Metadata Service v2 (IMDSv2) and the pre-authenticated `LabInstanceProfile`. No AWS secrets or access keys are ever stored on VMs or in Git.
 
 ---
 
-# 📋 Prerequisites
+## ☁️ Cloud Services Utilized
 
-Before running SmartPantry, ensure the host system has:
-
-* VMware Fusion
-* Vagrant
-* Git
-* Docker
-* Node.js/npm
-
-The project VMs are provisioned using the Vagrant configuration and provisioning script.
+| Service | Category | Resource Identifier | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Amazon EC2** | Compute (Approach 1) | `smartpantry-frontend`, `smartpantry-backend` | Two interacting Ubuntu 24.04 VMs hosting Nginx/React and Node.js REST API |
+| **Amazon DynamoDB** | Managed Storage Service | `smartpantry-inventory` | Fully managed NoSQL primary database storing inventory items |
+| **Amazon SNS** | Managed Messaging Service | `smartpantry-alerts` | Decoupled event notification topic broadcasting expiry & low-stock alerts |
+| **Amazon S3** | Managed Object Storage | `smartpantry-data-<random-id>` | Encrypted private bucket storing JSON inventory snapshot reports |
+| **Amazon CloudWatch** | Monitoring & Telemetry | `smartpantry-backend-high-cpu` | Metric alarm triggering SNS alerts if backend CPU $\ge 80\%$ |
+| **AWS IAM** | Identity & Security | `LabInstanceProfile` | Temporary credential resolution via IMDSv2 (zero hardcoded secrets) |
 
 ---
 
-# 🚀 Installation
+## 🔧 Prerequisites & Required Tool Versions
 
-## 1. Clone the repository
+To deploy and operate SmartPantry in the cloud, ensure the following tools are installed:
+
+* **Terraform**: Version `1.5.0` or higher ([Install Terraform](https://developer.hashicorp.com/terraform/downloads))
+* **AWS CLI**: Version `2.15.0` or higher ([Install AWS CLI](https://aws.amazon.com/cli/))
+* **Node.js**: Version `22 LTS` (for optional local testing)
+* **cURL**: Standard on macOS/Linux (for automated workflow verification)
+* **Git**: Version `2.30` or higher
+
+---
+
+## 🔑 AWS Academy Learner Lab Setup
+
+When working in an AWS Academy Learner Lab session:
+
+1. Open your **AWS Academy Learner Lab** console.
+2. Click **Start Lab** and wait until the indicator turns green.
+3. Click the **AWS Details** link next to the status icon.
+4. Copy the temporary credentials under **AWS CLI** and paste them into your terminal:
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+export AWS_ACCESS_KEY_ID="ASIA..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_SESSION_TOKEN="..."
+export AWS_DEFAULT_REGION="us-east-1"
 ```
 
-Move into the project:
+> [!NOTE]
+> AWS Academy Learner Lab sessions expire every 4 hours. If Terraform commands fail with an expired token error, simply copy fresh credentials from the Learner Lab modal.
 
+---
+
+## 🚀 Deployment Instructions
+
+### 1. Clone the Repository
 ```bash
+git clone https://github.com/gunitchawla/SmartPantry.git
 cd SmartPantry
 ```
 
+### 2. Configure Deployment Variables (Optional)
+```bash
+cd terraform
+cp terraform.tfvars.example terraform.tfvars
+```
+*You can customize `alert_email` inside `terraform.tfvars` if you wish to receive SNS alerts in your personal inbox.*
+
+### 3. Deploy via Terraform (or use `./scripts/deploy.sh`)
+```bash
+# Initialize Terraform and download HashiCorp AWS provider
+terraform init
+
+# Review execution plan
+terraform plan
+
+# Apply the infrastructure deployment (~2 to 3 minutes)
+terraform apply -auto-approve
+```
+
+### 4. Deployment Outputs
+Upon successful application, Terraform prints the active cloud endpoints:
+```text
+Apply complete! Resources: 9 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+backend_api_url = "http://54.167.34.12:5000"
+backend_health_url = "http://54.167.34.12:5000/health"
+dynamodb_table = "smartpantry-inventory"
+frontend_url = "http://54.205.18.91"
+s3_bucket = "smartpantry-data-a3b1c2d3"
+sns_topic_arn = "arn:aws:sns:us-east-1:123456789012:smartpantry-alerts"
+```
+
+Open `frontend_url` in your browser to access the live dashboard!
+
+* **Expected Deployment Time**: **2 to 3 minutes** total.
+* **Region**: `us-east-1`.
+* **Resource Naming Scheme**: All resources are prefixed with `smartpantry-*`.
+
 ---
 
-## 2. Check Vagrant
+## 🧪 Automated Workflow Verification
+
+To fulfill the assignment requirement for an automated check of a cloud-hosted workflow, execute the included test script:
 
 ```bash
-vagrant --version
+# Test against your deployed public backend URL:
+./scripts/test-cloud-workflow.sh $(terraform -chdir=terraform output -raw backend_api_url)
 ```
 
-Check the configured machines:
-
-```bash
-vagrant status
-```
-
----
-
-## 3. Start the VMs
-
-```bash
-vagrant up
-```
-
-This starts:
+The script automatically executes and validates 6 end-to-end cloud steps:
+1. **Health Check**: Validates `GET /health` confirming backend uptime, AWS region, and cloud connection mode.
+2. **Managed Storage Write**: Writes a test perishable product to **Amazon DynamoDB** (`POST /products`).
+3. **Managed Storage Read**: Queries all products (`GET /products`) and verifies that the new record is present.
+4. **Managed Service Alerting**: Triggers an inventory sweep (`POST /products/audit`) and confirms **Amazon SNS** dispatch.
+5. **Object Storage Export**: Uploads an inventory report to **Amazon S3** (`POST /products/export`).
+6. **Cleanup**: Deletes the test record from DynamoDB (`DELETE /products/:id`).
 
 ```text
-frontend
-backend
-database
+=================================================================
+   🥫 SmartPantry Cloud Automated Workflow Verification Check   
+=================================================================
+Target URL: http://54.167.34.12:5000
+Execution Time: 2026-09-22 05:42:00 UTC
+
+Step 1: Checking Backend Health & Cloud Services Status (/health)
+  ✓ PASSED: Backend is healthy (HTTP 200)
+
+Step 2: Meaningful Write to Managed Storage (POST /products)
+  ✓ PASSED: Product successfully created in DynamoDB (HTTP 201)
+
+Step 3: Meaningful Read from Managed Storage (GET /products)
+  ✓ PASSED: Products list retrieved successfully (HTTP 200)
+  ✓ PASSED: Verified newly inserted item is present in DynamoDB items list
+
+Step 4: Trigger Non-EC2 Managed Service - Amazon SNS Audit Sweep (POST /products/audit)
+  ✓ PASSED: Audit sweep completed and SNS alert event dispatched (HTTP 200)
+
+Step 5: Trigger Managed Object Storage Export - Amazon S3 (POST /products/export)
+  ✓ PASSED: Inventory snapshot exported to Amazon S3 (HTTP 200)
+
+Step 6: Cleaning Up Test Item (DELETE /products/item-...)
+  ✓ PASSED: Cleaned up test item from DynamoDB (HTTP 200)
+
+=================================================================
+Verification Summary: 7 passed, 0 failed
+=================================================================
+🎉 CLOUD WORKFLOW VERIFICATION SUCCEEDED!
 ```
 
 ---
 
-# ▶️ Running the Project
+## 📋 Deployment Variables Reference
 
-## Start Frontend
+The following parameters in `terraform/variables.tf` can be configured via `terraform.tfvars`:
 
-Connect to the frontend VM:
+| Variable | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `aws_region` | `string` | `"us-east-1"` | AWS Region for deployment |
+| `environment` | `string` | `"production"` | Environment tag applied to all resources |
+| `instance_type` | `string` | `"t3.micro"` | EC2 VM size (free-tier eligible) |
+| `key_name` | `string` | `""` | Optional AWS SSH Key Pair name |
+| `use_lab_role` | `bool` | `true` | When true, attaches pre-created `LabInstanceProfile` |
+| `alert_email` | `string` | `""` | Optional email to subscribe to SNS alerts |
+| `git_repo_url` | `string` | Repo URL | GitHub repository cloned during EC2 bootstrapping |
+| `git_branch` | `string` | `"main"` | Branch checked out on instances |
+
+---
+
+## ⚖️ Manual Steps Justification
+
+In accordance with COSC349 criteria, the following manual steps are required and justified by AWS Academy Learner Lab security constraints:
+
+1. **Retrieving Learner Lab Session Credentials**:
+   - *Justification*: AWS Academy accounts utilize short-lived STS tokens that expire every 4 hours. These cannot and must not be committed to Git. Users must paste their active session credentials into the terminal.
+2. **Utilizing Pre-Existing `LabInstanceProfile`**:
+   - *Justification*: AWS Academy Learner Lab prohibits IAM role/policy creation (`iam:CreateRole` is explicitly denied). Terraform is therefore configured to reference the existing `LabInstanceProfile` rather than attempting unauthorized role creation.
+
+---
+
+## 💰 Cost & Resource Lifecycle
+
+### Cost Analysis (us-east-1, September 2026)
+
+| State | Estimated Monthly Cost | Details |
+| :--- | :--- | :--- |
+| **Entirely Idle** | **\$23.98** | Incurs cost solely from two EC2 instances (\$14.98), attached 10GB gp3 EBS volumes (\$1.60), and allocated public IPv4 addresses (\$7.30). DynamoDB, SNS, and S3 cost **\$0.00** while idle. |
+| **Lightly Used (100 hrs/month)** | **\$4.80** | Assumes VMs run only during active testing. Includes 10,000 DynamoDB operations, 500 SNS alerts, and S3 exports. |
+| **With Active AWS Free Tier** | **\$0.90 / month** | 750 free t3.micro hours/month, 30GB free EBS storage, 25GB free DynamoDB storage. |
+
+### Teardown & Lifecycle Management
+* **Pause Billing without Data Loss**: Run `aws ec2 stop-instances` on the EC2 instances. This halts compute and IPv4 hourly fees while preserving EBS disks, DynamoDB items, SNS alerts, and S3 reports.
+* **Complete Teardown**: To deprovision all cloud resources, run:
+  ```bash
+  cd terraform
+  terraform destroy -auto-approve
+  ```
+  Terraform cleanly removes all resources in approximately **90 seconds**.
+* **Data Preservation**: Prior to teardown, click **Export to Amazon S3** in the UI or run `POST /products/export` to create an immutable JSON report of the pantry inventory.
+
+---
+
+## 🎥 Screen Recording Demonstration
+
+A concise screen recording under two minutes (110 seconds) demonstrates:
+1. User accessing the cloud frontend and adding a near-expiry item.
+2. Meaningful write and read in **Amazon DynamoDB**.
+3. AWS Console proof of running EC2 instances, DynamoDB items, and **Amazon SNS** alert dispatching.
+4. Execution of the automated verification script.
+
+👉 Consult [`docs/SCREEN_RECORDING_GUIDE.md`](file:///Users/gunitchawla/SmartPantry/docs/SCREEN_RECORDING_GUIDE.md) for the exact storyboard, timestamped checklist, and narration script.
+
+---
+
+## 💻 Local Development & Testing
+
+SmartPantry features an adaptive storage engine with graceful offline fallback. You can run and test both backend and frontend locally without an active AWS connection:
 
 ```bash
-vagrant ssh frontend
-```
-
-Move to the frontend directory:
-
-```bash
-cd /vagrant/frontend
-```
-
-Install dependencies if required:
-
-```bash
+# 1. Run Backend locally
+cd backend
 npm install
-```
+npm test              # Executes local integration test suite (7 checks)
+npm start             # Starts API on http://localhost:5000
 
-Start Vite:
-
-```bash
-npm run dev -- --host
-```
-
-The frontend should be accessible from the Mac at:
-
-```text
-http://192.168.56.10:5173
-```
-
----
-
-# 🔌 Backend
-
-Connect to the backend VM:
-
-```bash
-vagrant ssh backend
-```
-
-Move to the backend directory:
-
-```bash
-cd /vagrant/backend
-```
-
-Install dependencies:
-
-```bash
+# 2. Run Frontend locally
+cd ../frontend
 npm install
+npm run dev           # Launches Vite dev server on http://localhost:5173
+npm run build         # Validates production build bundle
 ```
 
-Start the backend:
+---
 
-```bash
-npm run dev
-```
+## 🔒 Security & Trust Boundaries
 
-The backend runs on:
+* **Decoupled Security Groups**: The frontend security group permits public inbound traffic only on HTTP port 80. The backend security group accepts traffic on port 5000 strictly from the frontend security group.
+* **Least Privilege Identity**: Backend EC2 instances use IMDSv2 to retrieve short-lived tokens through `LabInstanceProfile`. No AWS keys are stored on disk.
+* **Protected Object Storage**: S3 public access block is enforced; all data at rest is encrypted via AES-256 (SSE-S3).
+
+---
+
+## 📁 Project Structure
 
 ```text
-http://192.168.56.11:5000
+SmartPantry/
+├── .gitignore                     # Rigorous exclusion of .tfstate, .env, and secrets
+├── README.md                      # Primary cloud documentation
+├── backend/                       # Node.js Express REST API (Application Tier)
+│   ├── config/aws.js              # AWS SDK v3 client initialization
+│   ├── controllers/               # Business logic & event dispatchers
+│   ├── services/                  # DynamoDB, SNS, and S3 service adapters
+│   ├── routes/products.js         # REST endpoints for products, audit, and export
+│   ├── server.js                  # Express app & /health telemetry endpoint
+│   └── package.json               # Dependencies (@aws-sdk/*, express, uuid)
+├── frontend/                      # React + Vite Web Dashboard (Presentation Tier)
+│   ├── src/components/            # Dashboard, AddProduct, ProductCard, CloudControls
+│   ├── src/hooks/usePantry.js     # State management & cloud API hooks
+│   └── package.json               # Dependencies (react, vite, axios)
+├── terraform/                     # Infrastructure as Code (IaC)
+│   ├── main.tf                    # Complete AWS resource definitions
+│   ├── variables.tf               # Configurable deployment parameters
+│   ├── outputs.tf                 # Output URLs and endpoints
+│   ├── providers.tf               # HashiCorp AWS provider configuration
+│   ├── user_data_frontend.sh      # Nginx & React bootstrap script
+│   └── user_data_backend.sh       # Node.js backend bootstrap script
+├── scripts/                       # Automation & Verification
+│   ├── test-cloud-workflow.sh     # Automated cloud workflow test suite
+│   ├── deploy.sh                  # Turnkey deployment helper
+│   └── generate-report-pdf.sh     # Script compiling markdown report to PDF
+└── docs/                          # Comprehensive Academic Documentation
+    ├── REPORT.md                  # Complete Academic Project Report
+    ├── COSC349_Assignment_2_Report.pdf # Submission-Ready PDF Report
+    ├── ARCHITECTURE.md            # Technical Architecture Blueprint
+    └── SCREEN_RECORDING_GUIDE.md  # Video recording script (< 2 minutes)
 ```
 
 ---
 
-# 🗄️ Database
-
-The database VM uses:
-
-```text
-IP: 192.168.56.12
-Port: 3306
-Database: MySQL
-```
-
-The backend connects to the database using the database VM's private IP.
-
-The product information is stored in the `products` table.
-
-A product contains:
-
-```text
-id
-name
-quantity
-expiry_date
-```
-
----
-
-# 🔗 Backend API
-
-## Get Products
-
-### Request
-
-```http
-GET /products
-```
-
-Example:
-
-```bash
-curl http://192.168.56.11:5000/products
-```
-
-This retrieves the current product inventory.
-
----
-
-## Add Product
-
-### Request
-
-```http
-POST /products
-```
-
-### Example
-
-```bash
-curl -X POST http://192.168.56.11:5000/products \
--H "Content-Type: application/json" \
--d '{
-  "name": "Butter",
-  "quantity": 2,
-  "expiry_date": "2026-09-01"
-}'
-```
-
-A successful request should return an HTTP `201` response.
-
----
-
-# ➕ Adding Products
-
-There are two ways to add products.
-
-## Method 1 — Website
-
-Open:
-
-```text
-http://192.168.56.10:5173
-```
-
-Click:
-
-```text
-+ Add Product
-```
-
-Enter:
-
-```text
-Product Name
-Quantity
-Expiry Date
-```
-
-Then click:
-
-```text
-Add Product
-```
-
-The React frontend sends the information to:
-
-```text
-Backend → POST /products
-```
-
-The backend then stores the product in MySQL.
-
----
-
-## Method 2 — Terminal
-
-Use:
-
-```bash
-curl -X POST http://192.168.56.11:5000/products \
--H "Content-Type: application/json" \
--d '{
-  "name": "Butter",
-  "quantity": 2,
-  "expiry_date": "2026-09-01"
-}'
-```
-
-Then verify:
-
-```bash
-curl http://192.168.56.11:5000/products
-```
-
----
-
-# 🧪 Testing
-
-Testing should be performed layer by layer.
-
-## 1. Check VM status
-
-```bash
-vagrant status
-```
-
-All required VMs should be running.
-
----
-
-## 2. Check Backend
-
-```bash
-vagrant ssh backend
-```
-
-Then check that the Node.js server is running on:
-
-```text
-Port 5000
-```
-
----
-
-## 3. Test API
-
-```bash
-curl http://192.168.56.11:5000/products
-```
-
----
-
-## 4. Test POST API
-
-```bash
-curl -X POST http://192.168.56.11:5000/products \
--H "Content-Type: application/json" \
--d '{
-  "name": "Milk",
-  "quantity": 3,
-  "expiry_date": "2026-09-05"
-}'
-```
-
----
-
-## 5. Test Frontend
-
-Open:
-
-```text
-http://192.168.56.10:5173
-```
-
-Verify that:
-
-* Dashboard loads
-* Products are displayed
-* Search works
-* Filters work
-* Add Product works
-* Newly added products appear
-
----
-
-# 🐳 Docker
-
-Docker is used to containerise application services.
-
-A backend Docker image can be built from the directory containing the Dockerfile:
-
-```bash
-docker build -t smartpantry-backend .
-```
-
-If Docker Compose is being used, make sure the directory contains:
-
-```text
-docker-compose.yml
-```
-
-or:
-
-```text
-compose.yml
-```
-
-Then run:
-
-```bash
-docker compose up -d --build
-```
-
-> **Important:** `Dockerfile` and `docker-compose.yml` serve different purposes. A Dockerfile defines how an individual image is built, while Compose YAML defines how one or more containers are configured and run.
-
----
-
-# 🔧 Troubleshooting
-
-## `npm: command not found`
-
-Check:
-
-```bash
-node --version
-npm --version
-```
-
-If npm is unavailable, Node.js needs to be installed or correctly added to PATH.
-
----
-
-## Node.js `styleText` Error
-
-If you see:
-
-```text
-SyntaxError:
-The requested module 'node:util'
-does not provide an export named 'styleText'
-```
-
-this indicates a Node.js compatibility issue with the installed Vite/Rolldown dependencies.
-
-Check:
-
-```bash
-node --version
-```
-
-Use a Node.js version compatible with the project's installed dependencies.
-
----
-
-## Database `ECONNREFUSED`
-
-Example:
-
-```text
-ECONNREFUSED 192.168.56.12:3306
-```
-
-Check:
-
-1. Database VM is running.
-2. MySQL service is running.
-3. MySQL is listening on the required interface.
-4. Port `3306` is accessible.
-5. Backend database configuration uses:
-
-```text
-192.168.56.12
-```
-
----
-
-## Docker Compose "no configuration found"
-
-If you see:
-
-```text
-no configuration found
-```
-
-check that you are inside the directory containing:
-
-```text
-docker-compose.yml
-```
-
-Run:
-
-```bash
-ls
-```
-
-Then:
-
-```bash
-docker compose up -d --build
-```
-
----
-
-## VMware Disk Error
-
-If VMware reports an error such as:
-
-```text
-Cannot open the disk
-```
-
-or:
-
-```text
-Directory not empty
-```
-
-the VM's virtual disk/snapshot chain may have an issue.
-
-Check the VM state:
-
-```bash
-vagrant status
-```
-
-If the affected VM is disposable, it can be recreated after ensuring important project files are stored in the shared `/vagrant` directory or Git repository.
-
----
-
-# 🔄 Git Workflow
-
-After making changes:
-
-```bash
-git status
-```
-
-Stage the changes:
-
-```bash
-git add .
-```
-
-Create a commit:
-
-```bash
-git commit -m "Update SmartPantry application"
-```
-
-Push to GitHub:
-
-```bash
-git push origin main
-```
-
-For a feature branch:
-
-```bash
-git push origin <branch-name>
-```
-
----
-
-# 🔐 Security Considerations
-
-The project should follow basic security practices.
-
-### Do not commit secrets
-
-Avoid committing:
-
-```text
-database passwords
-API keys
-authentication secrets
-.env files containing credentials
-```
-
-### Use environment variables
-
-Configuration such as database credentials should ideally be stored using environment variables.
-
-### Backend validation
-
-The backend should validate incoming product data rather than relying exclusively on frontend validation.
-
-### Database security
-
-MySQL should not be unnecessarily exposed to external networks. Access should preferably be restricted to the backend service.
-
----
-
-# 🔮 Future Improvements
-
-Potential improvements include:
-
-* 🔐 User authentication and authorisation
-* 👤 Multiple user accounts
-* ✏️ Edit existing products
-* 🗑️ Delete products
-* 📦 Product categories
-* 📈 Inventory analytics
-* 🔔 Expiry notifications
-* 📧 Email notifications
-* 📱 Improved mobile interface
-* ☁️ Cloud deployment
-* 🔄 Automated CI/CD pipeline
-* 🧪 Automated unit and integration tests
-* 📊 Advanced inventory reports
-
----
-
-# 📈 Cloud Computing Concepts Demonstrated
-
-SmartPantry demonstrates several important cloud-computing concepts:
-
-### Virtualisation
-
-Vagrant and VMware are used to create isolated virtual machines.
-
-### Service Separation
-
-Frontend, backend and database operate as separate services.
-
-### Networking
-
-The VMs communicate using private IP addresses.
-
-```text
-Frontend
-192.168.56.10
-      ↓
-Backend
-192.168.56.11
-      ↓
-Database
-192.168.56.12
-```
-
-### Containerisation
-
-Docker provides a consistent environment for application services.
-
-### Reproducibility
-
-Vagrant provisioning allows the development environment to be recreated consistently.
-
-### Scalability
-
-The separated architecture provides a foundation for independently scaling application components.
-
----
-
-# 👨‍💻 Author
-
-**Gunit Chawla**
-
-Cloud Computing Assignment 1
-
----
-
-# 📄 License
-
-This project was developed for academic purposes as part of a Cloud Computing assignment.
-
----
-
-# 🎯 Conclusion
-
-SmartPantry combines a modern React interface with a Node.js REST API and MySQL database. The application is deployed across separate Vagrant virtual machines and uses Docker to demonstrate containerisation.
-
-The project demonstrates practical implementation of:
-
-```text
-React
-   ↓
-Node.js / Express
-   ↓
-MySQL
-   ↓
-Vagrant + VMware
-   ↓
-Docker
-   ↓
-Git / GitHub
-```
-
-This architecture provides a clear, modular and reproducible foundation for a cloud-based inventory management application.
+## 📄 License & Academic Attribution
+Developed by Gunit Chawla for **COSC349: Cloud Computing Architecture (2026)** at the **University of Otago**. Distributed under the ISC License.

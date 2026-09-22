@@ -8,7 +8,7 @@ const STATUS_LABEL = {
   unknown: "No date",
 };
 
-function ProductCard({ product }) {
+function ProductCard({ product, onDelete }) {
   const status = getFreshnessStatus(product.expiry_date);
 
   return (
@@ -29,6 +29,19 @@ function ProductCard({ product }) {
             <dd>{formatDate(product.expiry_date)}</dd>
           </div>
         </dl>
+
+        {onDelete && (
+          <div className="product-card__actions">
+            <button
+              type="button"
+              className="btn-consume"
+              onClick={() => onDelete(product.id)}
+              title="Consume or remove item from DynamoDB managed storage"
+            >
+              Consume / Remove
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="product-card__stamp">{formatDaysLabel(product.expiry_date)}</div>
