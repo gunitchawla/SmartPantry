@@ -35,7 +35,7 @@ cd /opt/smartpantry/frontend
 
 # 4. Set frontend environment variables (points directly to Backend EC2)
 cat << ENVFILE > /opt/smartpantry/frontend/.env
-VITE_API_URL=http://${backend_ip}:5000
+VITE_API_URL=/api
 VITE_AWS_REGION=${aws_region}
 ENVFILE
 

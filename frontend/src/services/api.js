@@ -1,15 +1,11 @@
 import axios from "axios";
 
 // Determine API base URL:
-// 1. Environment variable if set (VITE_API_URL)
-// 2. Localhost fallback in Vite dev mode
-// 3. Relative reverse-proxy '/api' when served via Nginx in production
+// 1. Local Vite dev server (port 5173): connect to http://localhost:5000
+// 2. Production (port 80 via Nginx): use relative '/api' reverse-proxied internally
 const getBaseURL = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
   if (typeof window !== "undefined" && window.location.port === "5173") {
-    return "http://localhost:5000";
+    return import.meta.env.VITE_API_URL || "http://localhost:5000";
   }
   return "/api";
 };
