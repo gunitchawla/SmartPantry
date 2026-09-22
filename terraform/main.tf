@@ -45,6 +45,14 @@ resource "aws_security_group" "frontend" {
   }
 
   ingress {
+    description = "HTTPS web traffic (allows instant TCP RST / fallback from modern browsers)"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description = "SSH administrative access"
     from_port   = 22
     to_port     = 22
