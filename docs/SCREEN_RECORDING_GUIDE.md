@@ -32,5 +32,5 @@ The assignment requires a screen recording of **no more than two minutes (120 se
   ./scripts/test-cloud-workflow.sh http://<backend-public-ip>:5000
   ```
 - [ ] Test your microphone level and do a quick 30-second practice run.
-- [ ] Check recording length: **Must not exceed 120 seconds!**
-- [ ] Upload video to University of Otago OneDrive (or unlisted YouTube) and copy the sharing link into `REPORT.md` and the Aoroa submission field.
+- [x] Screen Recording Link: [Google Drive Video](https://drive.google.com/file/d/1tqFswfCboywZPVRwBmoTX3vrvbe1WR8g/view?usp=drive_link)
+

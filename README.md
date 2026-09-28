@@ -292,7 +292,9 @@ A concise screen recording under two minutes (110 seconds) demonstrates:
 3. AWS Console proof of running EC2 instances, DynamoDB items, and **Amazon SNS** alert dispatching.
 4. Execution of the automated verification script.
 
+👉 **Watch Demonstration Video**: [Google Drive Screen Recording](https://drive.google.com/file/d/1tqFswfCboywZPVRwBmoTX3vrvbe1WR8g/view?usp=drive_link)  
 👉 Consult [`docs/SCREEN_RECORDING_GUIDE.md`](file:///Users/gunitchawla/SmartPantry/docs/SCREEN_RECORDING_GUIDE.md) for the exact storyboard, timestamped checklist, and narration script.
+
 
 ---
 

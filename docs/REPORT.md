@@ -15,7 +15,7 @@
 | **Repository Access** | Teaching staff granted access (`dme26` on GitHub / GitLab / Bitbucket) |
 | **Shared Repository URL** | `https://github.com/gunitchawla/SmartPantry.git` |
 | **Submitted Git Commit** | `9984909c56e5886690d9b4a326d3249f99224edc` |
-| **Screen Recording URL** | *(Insert University of Otago OneDrive / YouTube URL)* |
+| **Screen Recording URL** | [Google Drive Video Link](https://drive.google.com/file/d/1tqFswfCboywZPVRwBmoTX3vrvbe1WR8g/view?usp=drive_link) |
 | **Target Cloud Provider** | Amazon Web Services (AWS) via AWS Academy Learner Lab (`us-east-1`) |
 
 ---
@@ -282,7 +282,7 @@ SmartPantry includes an automated verification script: `scripts/test-cloud-workf
 
 ### 3.6. Screen Recording & Application Availability
 - **Recording Length**: Under 2 minutes (110 seconds).
-- **Video Link**: *(Inserted upon upload to University of Otago OneDrive / YouTube)*.
+- **Video Link**: [Google Drive Video Link (Screen Recording)](https://drive.google.com/file/d/1tqFswfCboywZPVRwBmoTX3vrvbe1WR8g/view?usp=drive_link).
 - **Recording Content Summary**:
   - Demonstrates user accessing the live cloud frontend on port 80.
   - Logs a product nearing expiry, demonstrating a meaningful write to DynamoDB and immediate UI status update.
