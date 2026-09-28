@@ -11,9 +11,10 @@
 | **Assignment** | Assignment 2: Redesigning and Deploying Software for the Cloud |
 | **Project Title** | 🥫 **SmartPantry**: Cloud-Native Pantry Inventory Management System |
 | **Author / Student Name** | Gunit Chawla |
+| **Student Username / ID** | `chagu186` |
 | **Repository Access** | Teaching staff granted access (`dme26` on GitHub / GitLab / Bitbucket) |
 | **Shared Repository URL** | `https://github.com/gunitchawla/SmartPantry.git` |
-| **Submitted Git Commit** | *(Recorded upon final git commit, e.g., `HEAD`)* |
+| **Submitted Git Commit** | `9984909c56e5886690d9b4a326d3249f99224edc` |
 | **Screen Recording URL** | *(Insert University of Otago OneDrive / YouTube URL)* |
 | **Target Cloud Provider** | Amazon Web Services (AWS) via AWS Academy Learner Lab (`us-east-1`) |
 
@@ -287,7 +288,7 @@ SmartPantry includes an automated verification script: `scripts/test-cloud-workf
   - Logs a product nearing expiry, demonstrating a meaningful write to DynamoDB and immediate UI status update.
   - Demonstrates the AWS Management Console showing the item in DynamoDB, the active EC2 instances, and the Amazon SNS alerts topic.
   - Demonstrates terminal execution of `test-cloud-workflow.sh` with all tests passing.
-- **Status at Submission**: The infrastructure configuration in Git matches the exact live deployment demonstrated in the video. When the AWS Academy Learner Lab session expires, the deployment can be recreated seamlessly using `terraform apply`.
+- **Status at Submission**: In accordance with the course Availability policy, resources are retained in a stopped-but-restartable state within the AWS Academy Learner Lab account, preserving all DynamoDB table records, SNS topics, security groups, and root EBS volumes. This pauses running compute charges to $0.00/hour, while allowing teaching staff to reach the AWS Console and restart stopped resources if desired. Furthermore, the entire infrastructure can be cleanly reprovisioned at any time from scratch using `terraform apply`.
 
 ---
 
