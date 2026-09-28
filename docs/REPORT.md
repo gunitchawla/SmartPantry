@@ -14,7 +14,7 @@
 | **Student Username / ID** | `chagu186` |
 | **Repository Access** | Teaching staff granted access (`dme26` on GitHub / GitLab / Bitbucket) |
 | **Shared Repository URL** | `https://github.com/gunitchawla/SmartPantry.git` |
-| **Submitted Git Commit** | `9984909c56e5886690d9b4a326d3249f99224edc` |
+| **Submitted Git Commit** | Final Submission (`HEAD` / Aoroa submission) |
 | **Screen Recording URL** | [Google Drive Video Link](https://drive.google.com/file/d/1tqFswfCboywZPVRwBmoTX3vrvbe1WR8g/view?usp=drive_link) |
 | **Target Cloud Provider** | Amazon Web Services (AWS) via AWS Academy Learner Lab (`us-east-1`) |
 
